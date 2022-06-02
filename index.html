@@ -20,25 +20,41 @@
 
 <body>
     <header>
-
-        <nav role="navigation" class="navbar navbar-dark bg-dark">
-            <div class="container-fluid">
-                
-                <a class="navbar-brand" href="#">
-                    <img class="me-2" src="assets/brand/logo.png" width="32" height="32" alt="A pair of scissors">
-                    Easy Split - Expenses Splitter
-                </a>
-            </div>
-        </nav>
+        <div class="text-center my-4">
+            <h1>
+                Easy<img class="mx-2" src="assets/brand/logo.png" width="32" height="32" alt="A pair of scissors">Split
+            </h1>
+        </div>
     </header>
 
     <main>
-
+        <div class="container">
+            <div class=" card card-body">
+                <article>
+                    <h2>Expenses Splitter</h2>
+                    <p class="lead">Let us help you keep your friendships intact.</p>
+                    <input placeholder="Name *" type="text" id="name" required class="form-control mb-2">
+                    <input placeholder="Amount *" type="number" id="amount" min="0" placeholder="0" step=".01" required
+                        class="form-control">
+                    <div class="container mt-4">
+                        <div class="float-end">
+                            <button type="button" id="buttonAdd" class="btn btn-primary">Add</button>
+                            <button type="button" id="buttonClear" class="btn btn-secondary"
+                                data-dismiss="modal">Clear</button>
+                        </div>
+                    </div>
+                </article>
+            </div>
+            <br>
+            <div class="container">
+                <!-- placeholder for splitter.js -->
+                <div id="display"></div>
+            </div>
+        </div>
     </main>
 
-    <footer class="text-center mt-2 pb-4">
+    <footer class="text-center pb-4">
         <div class="container-fluid">
-            <hr class="my-4">
             <article>
                 <p>A JavaScript web application written by</p>
                 <address>
