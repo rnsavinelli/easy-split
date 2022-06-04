@@ -113,33 +113,36 @@ function _appendChildToContributionDetailsTableBody(row) {
 function _renderContributionDetailsTable() {
   _resetContributionDetailsTableBody();
 
-  contributors.forEach((contributor) => {
-    _appendChildToContributionDetailsTableBody(
-      _createNewContributionDetailsTableRow(
-        contributor.name,
-        contributor.amount
-      )
-    );
-  });
+  if (contributors.length < 1) {
+  } else {
+    contributors.forEach((contributor) => {
+      _appendChildToContributionDetailsTableBody(
+        _createNewContributionDetailsTableRow(
+          contributor.getName(),
+          contributor.getAmount()
+        )
+      );
+    });
+  }
 }
 
 function _renderContributionDetails() {
-  let contributionDetailsTableBody = _getContributionDetailsTableBody();
   let contributionDetailsTableTotal = _getContributionDetailsTableTotal();
   let contributionDetailsTableEach = _getContributionDetailsTableEach();
-  let numberOfRows = Number(contributionDetailsTableBody.rows.length);
+  let numberOfContributors = contributors.length;
 
-  let total = 0;
+  let total = contributors
+    .map((contributor) => contributor.getAmount())
+    .reduce(
+      (fistAmount, secondAmount) => Number(fistAmount) + Number(secondAmount),
+      Number(0)
+    );
 
-  for (let i = 0, row; (row = contributionDetailsTableBody.rows.item(i)); i++) {
-    total += Number(row.cells.amount.innerText.valueOf());
-  }
-
-  if (numberOfRows == 0) {
+  if (numberOfContributors == 0) {
     contributionDetailsTableEach.innerHTML = 0;
   } else {
     contributionDetailsTableEach.innerHTML = (
-      total / numberOfRows
+      total / numberOfContributors
     ).toLocaleString();
   }
 
@@ -148,7 +151,7 @@ function _renderContributionDetails() {
 
 /* ----------- */
 
-/* Public functions */
+/* Public Functions */
 
 function resetContributionDetailsTable() {
   contributors = new Array();
@@ -156,6 +159,9 @@ function resetContributionDetailsTable() {
   _renderContributionDetailsTable();
   _renderContributionDetails();
 }
+/* ---------------- */
+
+/* Event Listeners */
 
 var contributionDetailsTableInputForm = _getContributionDetailsTableInputForm();
 contributionDetailsTableInputForm.addEventListener("submit", function (e) {
@@ -171,3 +177,5 @@ contributionDetailsTableInputForm.addEventListener("submit", function (e) {
 
   e.target.reset();
 });
+
+/* -------------- */

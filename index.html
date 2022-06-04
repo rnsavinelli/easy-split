@@ -100,12 +100,13 @@
             <div class="card-text border-bottom my-4 table-responsive">
               <table id="contributionDetailsTable" class="table table-bordered table-hover">
                 <thead>
-                  <tr>
+                  <tr id="contributionDetailsTableHeader" class="bg-light">
+                    <!--<th id="number" scope="col">#</th>-->
                     <th id="name" scope="col">Name</th>
-                    <th scope="col">Amount ($)</th>
+                    <th id="amount" scope="col">Amount ($)</th>
+                    <!--<th id="contribution" scope="col">Contribution (%)</th>-->
                   </tr>
                 </thead>
-                <!-- placeholder for splitter.js -->
                 <tbody id="contributionDetailsTableBody"></tbody>
               </table>
             </div>
