@@ -1,74 +1,141 @@
 <!DOCTYPE html>
 
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Sharing expenses should not be that hard." />
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Sharing expenses should not be that hard."
+    />
     <meta name="author" content="Roberto Nicolás Savinelli" />
-    <meta name="generator" content="Roberto Nicolás Savinelli">
+    <meta name="generator" content="Roberto Nicolás Savinelli" />
 
     <link rel="icon" type="image/x-icon" href="assets/x-icon/favicon.png" />
 
     <title>Easy Split - Expenses Splitter</title>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
-</head>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor"
+      crossorigin="anonymous"
+    />
+  </head>
 
-<body>
+  <body>
     <header>
-        <div class="text-center my-4">
-            <h1>
-                Easy<img class="mx-2" src="assets/brand/logo.png" width="32" height="32" alt="A pair of scissors">Split
-            </h1>
-        </div>
+      <div class="text-center my-4">
+        <h1>
+          Easy<img
+            class="mx-2"
+            src="assets/brand/logo.png"
+            width="32"
+            height="32"
+            alt="A pair of scissors"
+          />Split
+        </h1>
+      </div>
     </header>
 
     <main>
-        <div class="container">
-            <div class=" card card-body">
-                <article>
-                    <h2>Expenses Splitter</h2>
-                    <p class="lead">Let us help you keep your friendships intact.</p>
-                    <input placeholder="Name *" type="text" id="name" required class="form-control mb-2">
-                    <input placeholder="Amount *" type="number" id="amount" min="0" placeholder="0" step=".01" required
-                        class="form-control">
-                    <div class="container mt-4">
-                        <div class="float-end">
-                            <button type="button" id="buttonAdd" class="btn btn-primary">Add</button>
-                            <button type="button" id="buttonClear" class="btn btn-secondary"
-                                data-dismiss="modal">Clear</button>
-                        </div>
-                    </div>
-                </article>
-            </div>
-            <br>
-            <div class="container">
-                <!-- placeholder for splitter.js -->
-                <div id="display"></div>
-            </div>
+      <div class="container">
+        <div class="card card-body">
+          <article>
+            <h2>Expenses Splitter</h2>
+            <p class="lead">
+              Let us help you keep your friendships intact and your accounts
+              clear.
+            </p>
+            <form method="post" id="friendsInputForm">
+              <input
+                placeholder="Friend *"
+                type="text"
+                name="name"
+                required
+                class="form-control mb-2"
+              />
+              <input
+                placeholder="Amount *"
+                type="number"
+                name="amount"
+                min="0"
+                placeholder="0"
+                step=".01"
+                required
+                class="form-control"
+              />
+              <div class="container-responsive mt-3">
+                <div class="float-end">
+                  <button
+                    type="submit"
+                    class="my-1 btn btn-primary"
+                  >
+                    Add
+                  </button>
+                  <button
+                    type="button"
+                    onclick="print()"
+                    class="my-1 btn btn-success"
+                  >
+                    Download
+                  </button>
+                  <button
+                    type="button"
+                    onclick="resetFriendsTable()"
+                    class="my-1 btn btn-secondary"
+                    data-dismiss="modal"
+                  >
+                    Reset
+                  </button>
+                </div>
+              </div>
+            </form>
+          </article>
         </div>
+        <div class="card my-4 card-body">
+          <article>
+            <h3 class="card-title border-bottom pb-4">Contribution Details</h3>
+            <div class="card-text border-bottom my-4 table-responsive">
+              <table class="table table-bordered table-hover">
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Friend</th>
+                    <th scope="col">Amount ($)</th>
+                    <th scope="col">Contribution (%)</th>
+                  </tr>
+                </thead>
+                <!-- placeholder for splitter.js -->
+                <tbody id="friendsTableBody"></tbody>
+              </table>
+            </div>
+            <div class="text-start">
+              <h4>Each: $<span id="each">0</span></h4>
+              <h5 class="text-secondary">Total: $<span id="total">0</span></h5>
+            </div>
+          </article>
+        </div>
+      </div>
     </main>
 
     <footer class="text-center pb-4">
-        <div class="container-fluid">
-            <article>
-                <p>A JavaScript web application written by</p>
-                <address>
-                    <a href="https://savinelli.com.ar/">R. Nicolás Savinelli</a>
-                </address>
-            </article>
-        </div>
-
+      <div class="container-fluid">
+        <article class="lead">
+          <p>A JavaScript web application written by</p>
+          <address>
+            <b><a style="text-decoration: none;" href="https://savinelli.com.ar/">R. Nicolás Savinelli</a></b>
+          </address>
+        </article>
+      </div>
     </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
-        crossorigin="anonymous"></script>
-
-</body>
-
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
+      crossorigin="anonymous"
+    ></script>
+    <script src="assets/js/splitter.js"></script>
+  </body>
 </html>
