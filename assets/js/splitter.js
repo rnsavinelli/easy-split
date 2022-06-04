@@ -1,3 +1,28 @@
+/* Global Variables */
+
+var contributors = new Array();
+
+/* --------------- */
+
+/* Data Structures / Classes */
+
+class Contributor {
+  constructor(name, amount) {
+    this.name = name;
+    this.amount = amount;
+  }
+
+  getName() {
+    return this.name;
+  }
+
+  getAmount() {
+    return this.amount;
+  }
+}
+
+/* ------------------------ */
+
 /* DOM Elements */
 
 function _getContributionDetailsTable() {
@@ -31,6 +56,15 @@ function _newTableDataCell() {
 /* ----------- */
 
 /* ContributionDetailsTable Helpers */
+
+function _resetContributionDetailsTableBody() {
+  let contributionDetailsTableBody = _getContributionDetailsTableBody();
+  while (contributionDetailsTableBody.firstChild) {
+    contributionDetailsTableBody.removeChild(
+      contributionDetailsTableBody.firstChild
+    );
+  }
+}
 
 function _getContributionDetailsTableBody() {
   let contributionDetailsTable = _getContributionDetailsTable();
@@ -74,7 +108,20 @@ function _appendChildToContributionDetailsTableBody(row) {
 
 /* ----------- */
 
-/* ContributionDetailsTable Rederer */
+/* ContributionDetailsTable Rederers */
+
+function _renderContributionDetailsTable() {
+  _resetContributionDetailsTableBody();
+
+  contributors.forEach((contributor) => {
+    _appendChildToContributionDetailsTableBody(
+      _createNewContributionDetailsTableRow(
+        contributor.name,
+        contributor.amount
+      )
+    );
+  });
+}
 
 function _renderContributionDetails() {
   let contributionDetailsTableBody = _getContributionDetailsTableBody();
@@ -84,15 +131,31 @@ function _renderContributionDetails() {
 
   let total = 0;
 
-  for (let i = 0, row; row = contributionDetailsTableBody.rows.item(i); i++) {
+  for (let i = 0, row; (row = contributionDetailsTableBody.rows.item(i)); i++) {
     total += Number(row.cells.amount.innerText.valueOf());
   }
 
-  contributionDetailsTableEach.innerHTML = (total / numberOfRows).toLocaleString();
+  if (numberOfRows == 0) {
+    contributionDetailsTableEach.innerHTML = 0;
+  } else {
+    contributionDetailsTableEach.innerHTML = (
+      total / numberOfRows
+    ).toLocaleString();
+  }
+
   contributionDetailsTableTotal.innerHTML = total.toLocaleString();
 }
 
 /* ----------- */
+
+/* Public functions */
+
+function resetContributionDetailsTable() {
+  contributors = new Array();
+
+  _renderContributionDetailsTable();
+  _renderContributionDetails();
+}
 
 var contributionDetailsTableInputForm = _getContributionDetailsTableInputForm();
 contributionDetailsTableInputForm.addEventListener("submit", function (e) {
@@ -101,9 +164,7 @@ contributionDetailsTableInputForm.addEventListener("submit", function (e) {
   const formData = new FormData(e.target);
   const inputData = Object.fromEntries(formData);
 
-  _appendChildToContributionDetailsTableBody(
-    _createNewContributionDetailsTableRow(inputData.name, inputData.amount)
-  );
+  contributors.push(new Contributor(inputData.name, inputData.amount));
 
   _renderContributionDetailsTable();
   _renderContributionDetails();
