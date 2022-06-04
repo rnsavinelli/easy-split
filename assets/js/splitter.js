@@ -1,105 +1,112 @@
-function resetFriendsTable() {
-  let friendsTableChildNodes =
-    document.getElementById("friendsTableBody").childNodes;
-  friendsTableChildNodes.forEach((friend) =>
-    friend.parentNode.removeChild(friend)
-  );
+/* DOM Elements */
 
-  updateTotal();
-  updateEach();
+function _getContributionDetailsTable() {
+  return document.getElementById("contributionDetailsTable");
 }
 
-function createNewTableTextData(content) {
-  let td = document.createElement("td");
-  let text = document.createTextNode(String(content));
-
-  td.appendChild(text);
-
-  return td;
+function _getContributionDetailsTableInputForm() {
+  return document.getElementById("contributionDetailsTableInputForm");
 }
 
-function createNewFriendsTableRow(data) {
-  let numberOfFriendsTableChildNodes =
-    document.getElementById("friendsTableBody").childNodes.length;
-
-  let newFriendsTableRow = document.createElement("tr");
-
-  let number = createNewTableTextData(numberOfFriendsTableChildNodes);
-  newFriendsTableRow.appendChild(number);
-
-  let name = createNewTableTextData(data.name);
-  newFriendsTableRow.appendChild(name);
-
-  let amount = createNewTableTextData(data.amount);
-  newFriendsTableRow.appendChild(amount);
-
-  let contribution = createNewTableTextData(0);
-  newFriendsTableRow.appendChild(contribution);
-
-  return newFriendsTableRow;
+function _getContributionDetailsTableTotal() {
+  return document.getElementById("total");
 }
 
-function addFriend(data) {
-  let friendsTable = document.getElementById("friendsTableBody");
-
-  let newTableRow = createNewFriendsTableRow(data);
-
-  friendsTable.appendChild(newTableRow);
+function _getContributionDetailsTableEach() {
+  return document.getElementById("each");
 }
 
-function updateContributions() {
-  let friendsTableChildNodes =
-    document.getElementById("friendsTableBody").childNodes;
+/* ------------ */
 
-  let total = Number(document.getElementById("total").innerText);
+/* DOM Helpers */
 
-  friendsTableChildNodes.forEach((friend) => {
-    let amount = friend.cells[2].innerText.valueOf();
-    friend.cells[3].innerText = (Number(amount / total) * 100).toLocaleString();
-  });
+function _newTableRow() {
+  return document.createElement("tr");
 }
 
-function updateTotal() {
-  let friendsTableChildNodes =
-    document.getElementById("friendsTableBody").childNodes;
+function _newTableDataCell() {
+  return document.createElement("td");
+}
 
-  let textTotal = document.getElementById("total");
+/* ----------- */
+
+/* ContributionDetailsTable Helpers */
+
+function _getContributionDetailsTableBody() {
+  let contributionDetailsTable = _getContributionDetailsTable();
+  return contributionDetailsTable.tBodies.contributionDetailsTableBody;
+}
+
+function _createNewContributionDetailsTableRowElement() {
+  let newContributionDetailsTableRowElement = {
+    name: _newTableDataCell(),
+    amount: _newTableDataCell(),
+  };
+
+  newContributionDetailsTableRowElement.name.id = "name";
+  newContributionDetailsTableRowElement.amount.id = "amount";
+
+  return newContributionDetailsTableRowElement;
+}
+
+function _populateTableRowWithTableDataCells(row, rowData) {
+  row.appendChild(rowData.name);
+  row.appendChild(rowData.amount);
+}
+
+function _createNewContributionDetailsTableRow(name, amount) {
+  let row = _newTableRow();
+  let rowData = _createNewContributionDetailsTableRowElement();
+
+  rowData.name.appendChild(document.createTextNode(String(name)));
+  rowData.amount.appendChild(document.createTextNode(Number(amount)));
+
+  _populateTableRowWithTableDataCells(row, rowData);
+
+  return row;
+}
+
+function _appendChildToContributionDetailsTableBody(row) {
+  let contributionDetailsTableBody = _getContributionDetailsTableBody();
+
+  contributionDetailsTableBody.appendChild(row);
+}
+
+/* ----------- */
+
+/* ContributionDetailsTable Rederer */
+
+function _renderContributionDetails() {
+  let contributionDetailsTableBody = _getContributionDetailsTableBody();
+  let contributionDetailsTableTotal = _getContributionDetailsTableTotal();
+  let contributionDetailsTableEach = _getContributionDetailsTableEach();
+  let numberOfRows = Number(contributionDetailsTableBody.rows.length);
+
   let total = 0;
 
-  friendsTableChildNodes.forEach(
-    (friend) => (total += Number(friend.cells[2].innerText.valueOf()))
-  );
+  for (let i = 0, row; row = contributionDetailsTableBody.rows.item(i); i++) {
+    total += Number(row.cells.amount.innerText.valueOf());
+  }
 
-  textTotal.innerText = total.toLocaleString();
+  contributionDetailsTableEach.innerHTML = (total / numberOfRows).toLocaleString();
+  contributionDetailsTableTotal.innerHTML = total.toLocaleString();
 }
 
-function updateEach() {
-  let total = Number(document.getElementById("total").innerText);
-  let numberOfFriendsTableChildNodes = document
-    .getElementById("friendsTableBody")
-    .childNodes.length.valueOf();
+/* ----------- */
 
-  let each = document.getElementById("each");
-
-  each.innerHTML = (total / numberOfFriendsTableChildNodes).toLocaleString();
-}
-
-function updateContributionDetails() {
-  updateTotal();
-  updateEach();
-  updateContributions();
-}
-
-var friendsInputForm = document.getElementById("friendsInputForm");
-friendsInputForm.addEventListener("submit", function (e) {
+var contributionDetailsTableInputForm = _getContributionDetailsTableInputForm();
+contributionDetailsTableInputForm.addEventListener("submit", function (e) {
   e.preventDefault();
 
   const formData = new FormData(e.target);
   const inputData = Object.fromEntries(formData);
 
-  addFriend(inputData);
+  _appendChildToContributionDetailsTableBody(
+    _createNewContributionDetailsTableRow(inputData.name, inputData.amount)
+  );
 
-  updateContributionDetails();
+  _renderContributionDetailsTable();
+  _renderContributionDetails();
 
   e.target.reset();
 });

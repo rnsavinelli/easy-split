@@ -48,9 +48,9 @@
               Let us help you keep your friendships intact and your accounts
               clear.
             </p>
-            <form method="post" id="friendsInputForm">
+            <form method="post" id="contributionDetailsTableInputForm">
               <input
-                placeholder="Friend *"
+                placeholder="Name *"
                 type="text"
                 name="name"
                 required
@@ -83,7 +83,7 @@
                   </button>
                   <button
                     type="button"
-                    onclick="resetFriendsTable()"
+                    onclick="resetContributionDetailsTable()"
                     class="my-1 btn btn-secondary"
                     data-dismiss="modal"
                   >
@@ -98,17 +98,15 @@
           <article>
             <h3 class="card-title border-bottom pb-4">Contribution Details</h3>
             <div class="card-text border-bottom my-4 table-responsive">
-              <table class="table table-bordered table-hover">
+              <table id="contributionDetailsTable" class="table table-bordered table-hover">
                 <thead>
                   <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Friend</th>
+                    <th id="name" scope="col">Name</th>
                     <th scope="col">Amount ($)</th>
-                    <th scope="col">Contribution (%)</th>
                   </tr>
                 </thead>
                 <!-- placeholder for splitter.js -->
-                <tbody id="friendsTableBody"></tbody>
+                <tbody id="contributionDetailsTableBody"></tbody>
               </table>
             </div>
             <div class="text-start">
