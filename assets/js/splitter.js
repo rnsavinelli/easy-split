@@ -1,3 +1,9 @@
+/**
+ * splitter.js
+ *
+ * @author Roberto Nicolás Savinelli <rsavinelli@frba.utn.edu.ar>
+ */
+
 /* Global Variables */
 
 var contributors = new Array();
