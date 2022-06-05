@@ -29,6 +29,16 @@ function _getContributionDetailsTable() {
   return document.getElementById("contributionDetailsTable");
 }
 
+function _getContributionDetailsTableBody() {
+  let contributionDetailsTable = _getContributionDetailsTable();
+  return contributionDetailsTable.tBodies.contributionDetailsTableBody;
+}
+
+function _getContributionDetailsTableHead() {
+  let contributionDetailsTable = _getContributionDetailsTable();
+  return contributionDetailsTable.tHead;
+}
+
 function _getContributionDetailsTableInputForm() {
   return document.getElementById("contributionDetailsTableInputForm");
 }
@@ -53,6 +63,17 @@ function _newTableDataCell() {
   return document.createElement("td");
 }
 
+function _newTextNode(text) {
+  return document.createTextNode(String(text));
+}
+
+function _newTableHeading() {
+  let th = document.createElement("th");
+  th.scope = "col";
+
+  return th;
+}
+
 /* ----------- */
 
 /* ContributionDetailsTable Helpers */
@@ -66,9 +87,13 @@ function _resetContributionDetailsTableBody() {
   }
 }
 
-function _getContributionDetailsTableBody() {
-  let contributionDetailsTable = _getContributionDetailsTable();
-  return contributionDetailsTable.tBodies.contributionDetailsTableBody;
+function _resetContributionDetailsTableHead() {
+  let contributionDetailsTableHeader = _getContributionDetailsTableHead();
+  while (contributionDetailsTableHeader.firstChild) {
+    contributionDetailsTableHeader.removeChild(
+      contributionDetailsTableHeader.firstChild
+    );
+  }
 }
 
 function _createNewContributionDetailsTableRowElement() {
@@ -92,8 +117,8 @@ function _createNewContributionDetailsTableRow(name, amount) {
   let row = _newTableRow();
   let rowData = _createNewContributionDetailsTableRowElement();
 
-  rowData.name.appendChild(document.createTextNode(String(name)));
-  rowData.amount.appendChild(document.createTextNode(Number(amount)));
+  rowData.name.appendChild(_newTextNode(String(name)));
+  rowData.amount.appendChild(_newTextNode(Number(amount)));
 
   _populateTableRowWithTableDataCells(row, rowData);
 
@@ -106,15 +131,72 @@ function _appendChildToContributionDetailsTableBody(row) {
   contributionDetailsTableBody.appendChild(row);
 }
 
+function _createNewContributionDetailsTableHeading() {
+  let row = _newTableRow();
+
+  let name = _newTableHeading();
+  let amount = _newTableHeading();
+
+  name.id = "name";
+  amount.id = "amount";
+
+  name.appendChild(_newTextNode("Name"));
+  amount.appendChild(_newTextNode("Amount ($)"));
+
+  row.appendChild(name);
+  row.appendChild(amount);
+
+  return row;
+}
+
+function _createNewContributionDetailsTableEmptyMessageHeading() {
+  let row = _newTableRow();
+  let heading = _newTableHeading();
+
+  let message = _newTextNode(
+    "No friends have been added to the contributors list!"
+  );
+
+  heading.classList.add("text-muted","text-center", "fw-normal");
+
+  heading.appendChild(message);
+
+  row.appendChild(heading);
+
+  return row;
+}
+
+function _appendChildToContributionDetailsTableHead(row) {
+  let contributionDetailsTableHead = _getContributionDetailsTableHead();
+
+  contributionDetailsTableHead.appendChild(row);
+}
+
 /* ----------- */
 
 /* ContributionDetailsTable Rederers */
 
+function _renderContributionDetailsTableHead() {
+  let contributionDetailsTableHeading =
+    _createNewContributionDetailsTableHeading();
+  _appendChildToContributionDetailsTableHead(contributionDetailsTableHeading);
+}
+
+function _renderContributionDetailsTableEmptyMessage() {
+  let contributionDetailsTableHeading =
+    _createNewContributionDetailsTableEmptyMessageHeading();
+  _appendChildToContributionDetailsTableHead(contributionDetailsTableHeading);
+}
+
 function _renderContributionDetailsTable() {
+  _resetContributionDetailsTableHead();
   _resetContributionDetailsTableBody();
 
   if (contributors.length < 1) {
+    _renderContributionDetailsTableEmptyMessage();
   } else {
+    _renderContributionDetailsTableHead();
+
     contributors.forEach((contributor) => {
       _appendChildToContributionDetailsTableBody(
         _createNewContributionDetailsTableRow(

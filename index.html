@@ -41,10 +41,10 @@
 
     <main>
       <div class="container">
-        <div class="card card-body">
+        <div class="card card-body shadow">
           <article>
             <h2>Expenses Splitter</h2>
-            <p class="lead">
+            <p>
               Let us help you keep your friendships intact and your accounts
               clear.
             </p>
@@ -55,6 +55,7 @@
                 name="name"
                 required
                 class="form-control mb-2"
+                style="border-radius: 0"
               />
               <input
                 placeholder="Amount *"
@@ -65,15 +66,14 @@
                 step=".01"
                 required
                 class="form-control"
+                style="border-radius: 0"
               />
               <div class="container-responsive mt-3">
                 <div class="float-end">
-                  <button
-                    type="submit"
-                    class="my-1 btn btn-primary"
-                  >
+                  <button type="submit" class="my-1 btn btn-primary">
                     Add
                   </button>
+                  <!--
                   <button
                     type="button"
                     onclick="print()"
@@ -81,6 +81,7 @@
                   >
                     Download
                   </button>
+                  -->
                   <button
                     type="reset"
                     onclick="resetContributionDetailsTable()"
@@ -94,24 +95,26 @@
             </form>
           </article>
         </div>
-        <div class="card my-4 card-body">
+        <div class="card my-4 card-body shadow">
           <article>
             <h3 class="card-title border-bottom pb-4">Contribution Details</h3>
             <div class="card-text border-bottom my-4 table-responsive">
-              <table id="contributionDetailsTable" class="table table-bordered table-hover">
-                <thead>
-                  <tr id="contributionDetailsTableHeader" class="bg-light">
-                    <!--<th id="number" scope="col">#</th>-->
-                    <th id="name" scope="col">Name</th>
-                    <th id="amount" scope="col">Amount ($)</th>
-                    <!--<th id="contribution" scope="col">Contribution (%)</th>-->
+              <table
+                id="contributionDetailsTable"
+                class="table table-bordered table-hover"
+              >
+                <thead class="bg-light">
+                  <tr>
+                    <th scope="col" class="text-muted text-center fw-normal">
+                      No friends have been added to the contributors list!
+                    </th>
                   </tr>
                 </thead>
                 <tbody id="contributionDetailsTableBody"></tbody>
               </table>
             </div>
             <div class="text-start">
-              <h4>Each: $<span id="each">0</span></h4>
+              <h4 class="text-primary">Each: $<span id="each">0</span></h4>
               <h5 class="text-secondary">Total: $<span id="total">0</span></h5>
             </div>
           </article>
@@ -121,10 +124,14 @@
 
     <footer class="text-center pb-4">
       <div class="container-fluid">
-        <article class="lead">
+        <article class="text-muted fw-normal">
           <p>A JavaScript web application written by</p>
           <address>
-            <b><a style="text-decoration: none;" href="https://savinelli.com.ar/">R. Nicolás Savinelli</a></b>
+            <b
+              ><a style="text-decoration: none" href="https://savinelli.com.ar/"
+                >R. Nicolás Savinelli</a
+              ></b
+            >
           </address>
         </article>
       </div>
